@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#FF7F50">
+<title>Panduan Aktivitas Speech Delay 3 Tahun</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito Sans',sans-serif;background:#FFF9F4;color:#2D2418;min-height:100vh}
+button{font-family:'Nunito Sans',sans-serif;touch-action:manipulation;cursor:pointer}
+
+/* HEADER */
+#header{background:#fff;border-bottom:2px solid #F0E8DF;padding:14px 16px 0;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.04)}
+.hrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-ic{width:38px;height:38px;background:linear-gradient(135deg,#FF7F50,#F5A623);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.logo-t h1{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;line-height:1.1}
+.logo-t p{font-size:11px;color:#8A7A6A;font-weight:600}
+.prog-info{text-align:right;font-size:11px;color:#8A7A6A;font-weight:600}
+.prog-wrap{background:#F0E8DF;border-radius:99px;height:6px;width:100px;margin-top:4px}
+.prog-bar{background:linear-gradient(90deg,#FF7F50,#F5A623);border-radius:99px;height:6px;width:0%;transition:width .4s}
+.nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{flex-shrink:0;padding:9px 14px;border:none;background:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:#8A7A6A;border-bottom:3px solid transparent;border-radius:8px 8px 0 0;transition:all .2s}
+.nav-btn.active{color:#FF7F50;border-bottom-color:#FF7F50}
+
+/* MAIN */
+main{max-width:700px;margin:0 auto;padding:16px 14px 90px}
+.page{display:none}.page.active{display:block}
+
+/* FILTER */
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.fchip{padding:6px 12px;border-radius:99px;border:1.5px solid #F0E8DF;background:#fff;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:#8A7A6A;transition:all .2s}
+.fchip.active{background:#FF7F50;border-color:#FF7F50;color:#fff}
+
+/* TIME SECTION */
+.tsec{margin-bottom:24px}
+.time-hdr{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:1.5px solid #F0E8DF;border-radius:12px;margin-bottom:12px}
+.time-em{font-size:20px}
+.time-lbl{font-family:'Nunito',sans-serif;font-weight:800;font-size:14px}
+.time-clk{margin-left:auto;font-size:11px;font-weight:600;color:#8A7A6A;background:#FFF9F4;padding:3px 10px;border-radius:99px;border:1px solid #F0E8DF}
+
+/* CARD */
+.card{border-radius:16px;border:1.5px solid #F0E8DF;background:#fff;margin-bottom:10px;overflow:hidden}
+.card-hdr{display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;user-select:none;min-height:54px}
+.card-num{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;flex-shrink:0}
+.card-tw{flex:1;min-width:0}
+.card-title{font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;line-height:1.2;color:#2D2418}
+.tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;font-family:'Nunito',sans-serif}
+.card-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.chk{width:32px;height:32px;border-radius:50%;border:2px solid #F0E8DF;background:#FFF9F4;color:#ccc;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.chk.done{background:#5BC47A;border-color:#5BC47A;color:#fff}
+.chev{width:18px;height:18px;color:#8A7A6A;transition:transform .25s;flex-shrink:0}
+.card-hdr.open .chev{transform:rotate(180deg)}
+.card-body{display:none;padding:0 14px 16px;border-top:1.5px solid #F0E8DF}
+.card-body.show{display:block}
+
+/* INNER TABS */
+.itabs{display:flex;gap:2px;margin:12px 0 10px;background:#FFF9F4;border-radius:10px;padding:3px}
+.itab{flex:1;padding:7px 4px;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:#8A7A6A;border-radius:8px;transition:all .2s}
+.itab.active{background:#fff;color:#2D2418;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.tab-pnl{display:none}.tab-pnl.show{display:block}
+
+/* TUJUAN */
+.tbox{background:#FFF9F4;border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.8}
+.tbox ul{padding-left:18px}
+
+/* CONTOH */
+.cblock{border-radius:12px;overflow:hidden;border:1.5px solid #F0E8DF;margin-bottom:10px}
+.clbl{font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:6px 12px}
+.ccont{padding:10px 12px}
+.dbubble{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+.who{font-size:11px;font-weight:800;color:#8A7A6A;min-width:48px;padding-top:4px;flex-shrink:0;font-family:'Nunito',sans-serif}
+.bub{border-radius:12px;padding:8px 12px;font-size:13px;line-height:1.5;flex:1}
+.bub-o{background:#E8F4FF;color:#1A5A8A;border-bottom-left-radius:4px}
+.bub-a{background:#FFF0EB;color:#7A3010;border-bottom-right-radius:4px}
+.bub-n{background:#FFF8EB;color:#7A5400;font-style:italic;font-size:12px}
+
+/* TIPS */
+.tip-list{display:flex;flex-direction:column;gap:8px}
+.tip-item{display:flex;align-items:flex-start;gap:10px;background:#FFF9F4;border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.5}
+.tip-ic{font-size:18px;flex-shrink:0}
+.dur{display:inline-block;background:#2D2418;color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:99px;margin-bottom:6px;font-family:'Nunito',sans-serif}
+
+/* TIPS PAGE */
+.tp-sec{margin-bottom:24px}
+.tp-sec h2{font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;margin-bottom:12px}
+.do-card,.dont-card{border-radius:12px;padding:14px;margin-bottom:10px}
+.do-card{background:#EDF8F1;border:1.5px solid #C2EACF}
+.dont-card{background:#FFF0EB;border:1.5px solid #FFD4C2}
+.do-card strong{color:#5BC47A;display:block;font-family:'Nunito',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.dont-card strong{color:#FF7F50;display:block;font-family:'Nunito',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.cli{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:14px}
+.cli:last-child{border-bottom:none}
+.about-card{background:#fff;border:1.5px solid #F0E8DF;border-radius:16px;padding:16px;font-size:14px;line-height:1.7;margin-bottom:12px}
+.about-card h3{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;margin-bottom:8px}
+.legend-row{display:flex;flex-wrap:wrap;gap:8px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.ldot{width:12px;height:12px;border-radius:50%}
+
+/* STAT BAR */
+#statbar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #F0E8DF;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;z-index:100;box-shadow:0 -2px 12px rgba(0,0,0,.05)}
+.stat-item{text-align:center}
+.stat-num{font-family:'Nunito',sans-serif;font-weight:800;font-size:18px;line-height:1}
+.stat-lbl{font-size:11px;color:#8A7A6A;font-weight:600}
+.reset-btn{border:1.5px solid #F0E8DF;background:#FFF9F4;border-radius:8px;padding:6px 14px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:#8A7A6A}
+
+.hidden{display:none!important}
+@supports(padding:env(safe-area-inset-bottom)){
+  #statbar{padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+  main{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="hrow">
+    <div class="logo">
+      <div class="logo-ic">🌱</div>
+      <div class="logo-t">
+        <h1>Panduan Aktivitas</h1>
+        <p>Speech Delay · 3 tahun 1 bulan</p>
+      </div>
+    </div>
+    <div class="prog-info">
+      <div id="prog-txt">0 selesai hari ini</div>
+      <div class="prog-wrap"><div class="prog-bar" id="prog-bar"></div></div>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn active" data-page="pg-aktivitas">📋 Aktivitas</button>
+    <button class="nav-btn" data-page="pg-tips">💡 Tips</button>
+    <button class="nav-btn" data-page="pg-tentang">ℹ️ Tentang</button>
+  </div>
+</div>
+
+<main>
+
+<!-- PAGE AKTIVITAS -->
+<div id="pg-aktivitas" class="page active">
+  <div class="filter-bar">
+    <button class="fchip active" data-filter="all">✨ Semua</button>
+    <button class="fchip" data-filter="verbal">🗣 Verbal</button>
+    <button class="fchip" data-filter="sensori">🤲 Sensori</button>
+    <button class="fchip" data-filter="motorik">🏃 Motorik</button>
+    <button class="fchip" data-filter="sosial">👫 Sosial</button>
+    <button class="fchip" data-filter="terapi">❤️ Terapi</button>
+  </div>
+
+  <!-- PAGI -->
+  <div class="tsec">
+    <div class="time-hdr"><span class="time-em">🌅</span><span class="time-lbl">Pagi — Rutinitas Bangun</span><span class="time-clk">06:30–07:30</span></div>
+
+    <div class="card" data-tags="verbal sosial">
+      <div class="card-hdr">
+        <div class="card-num" style="background:#FFF0EB;color:#FF7F50">1</div>
+        <div class="card-tw"><div class="card-title">Sapa di Depan Cermin</div><div class="tags"><span class="tag" style="background:#FFF0EB;color:#FF7F50">🗣 Verbal</span><span class="tag" style="background:#F7EDFB;color:#C97DD5">👫 Sosial</span></div></div>
+        <div class="card-right"><button class="chk">✓</button><svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="itabs"><button class="itab active" data-t="t1a">🎯 Tujuan</button><button class="itab" data-t="t1b">💬 Contoh</button><button class="itab" data-t="t1c">💡 Tips</button></div>
+        <div id="t1a" class="tab-pnl show"><div class="tbox"><ul><li>Memperkenalkan nama bagian tubuh secara berulang</li><li>Membangun kesadaran diri dan kontak mata</li><li>Stimulasi imitasi ekspresi wajah (penting untuk bicara)</li></ul></div></div>
+        <div id="t1b" class="tab-pnl"><div class="cblock" style="border-color:#FFD4C2"><div class="clbl" style="background:#FFF0EB;color:#FF7F50">🗣 Contoh Dialog</div><div class="ccont"><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Halo Adek! Lihat, ini hidung Adek! 👃" (tunjuk hidung di cermin)</div></div><div class="dbubble"><span class="who">Tunggu:</span><div class="bub bub-n">Tunggu 5 detik. Jika tidak respons, lanjutkan tanpa memaksa.</div></div><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Ini mata Adek! 👀 Berkedip yuk! Kedip... kedip..."</div></div><div class="dbubble"><span class="who">Anak:</span><div class="bub bub-a">[meniru berkedip] = SUKSES! Apresiasi: "Wah pinter! Mata!"</div></div></div></div><div class="cblock" style="border-color:#E2C5EB"><div class="clbl" style="background:#F7EDFB;color:#C97DD5">👫 Variasi Menarik</div><div class="ccont">Buat ekspresi lucu — senyum lebar, cemberut, kaget. Anak seringkali ikut meniru ekspresi sebelum kata-kata.</div></div></div>
+        <div id="t1c" class="tab-pnl"><div class="tip-list"><div class="tip-item"><span class="tip-ic">⏱️</span><div><div class="dur">10 menit</div>Lakukan saat berpakaian atau setelah bangun. Tidak perlu sesi khusus.</div></div><div class="tip-item"><span class="tip-ic">🚫</span><div>Jangan tanya "Itu apa?" — sebutkan saja. "Ini hidung." Pertanyaan memberi tekanan.</div></div><div class="tip-item"><span class="tip-ic">🔄</span><div>Ulangi kata yang sama setiap hari. Repetisi adalah kunci pemerolehan bahasa.</div></div></div></div>
+      </div>
+    </div>
+
+    <div class="card" data-tags="verbal">
+      <div class="card-hdr">
+        <div class="card-num" style="background:#FFF0EB;color:#FF7F50">2</div>
+        <div class="card-tw"><div class="card-title">Rutinitas Berpakaian Bernama</div><div class="tags"><span class="tag" style="background:#FFF0EB;color:#FF7F50">🗣 Verbal</span></div></div>
+        <div class="card-right"><button class="chk">✓</button><svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="itabs"><button class="itab active" data-t="t2a">🎯 Tujuan</button><button class="itab" data-t="t2b">💬 Contoh</button><button class="itab" data-t="t2c">💡 Tips</button></div>
+        <div id="t2a" class="tab-pnl show"><div class="tbox"><ul><li>Menambah kosakata benda sehari-hari (kaos, celana, sepatu)</li><li>Melatih pemilihan sederhana dengan 2 opsi</li><li>Membangun rutinitas berbahasa yang konsisten</li></ul></div></div>
+        <div id="t2b" class="tab-pnl"><div class="cblock" style="border-color:#FFD4C2"><div class="clbl" style="background:#FFF0EB;color:#FF7F50">🗣 Contoh Pilihan</div><div class="ccont"><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Adek mau kaos merah atau kaos biru?" (pegang keduanya di depan anak)</div></div><div class="dbubble"><span class="who">Anak:</span><div class="bub bub-a">[menunjuk merah, atau bilang "itu", atau bilang "merah"] → semua diterima!</div></div><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Oh, merah! Bagus! Ini kaos merah." (ulangi kata pilihan anak)</div></div></div></div></div>
+        <div id="t2c" class="tab-pnl"><div class="tip-list"><div class="tip-item"><span class="tip-ic">2️⃣</span><div>Selalu berikan tepat 2 pilihan, tidak lebih. Lebih dari 2 membingungkan dan membuat anak diam.</div></div><div class="tip-item"><span class="tip-ic">✅</span><div>Terima respons apapun: tunjuk, tatapan, suara, kata. Jangan minta "Pakai kata yang benar dulu."</div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SARAPAN -->
+  <div class="tsec">
+    <div class="time-hdr"><span class="time-em">🍳</span><span class="time-lbl">Sarapan Bersama</span><span class="time-clk">07:00–07:30</span></div>
+    <div class="card" data-tags="sensori verbal">
+      <div class="card-hdr">
+        <div class="card-num" style="background:#EBF6FB;color:#4DAACC">3</div>
+        <div class="card-tw"><div class="card-title">Eksplorasi Tekstur Makanan</div><div class="tags"><span class="tag" style="background:#EBF6FB;color:#4DAACC">🤲 Sensori</span><span class="tag" style="background:#FFF0EB;color:#FF7F50">🗣 Verbal</span></div></div>
+        <div class="card-right"><button class="chk">✓</button><svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="itabs"><button class="itab active" data-t="t3a">🎯 Tujuan</button><button class="itab" data-t="t3b">💬 Contoh</button><button class="itab" data-t="t3c">💡 Tips</button></div>
+        <div id="t3a" class="tab-pnl show"><div class="tbox"><ul><li>Stimulasi oral-motorik (mulut, lidah, rahang) yang mendukung produksi suara</li><li>Memperkaya kosakata deskriptif (panas, dingin, renyah, lembut)</li><li>Mengurangi sensitivitas oral yang kerap ada pada anak speech delay</li></ul></div></div>
+        <div id="t3b" class="tab-pnl"><div class="cblock" style="border-color:#C2E4F5"><div class="clbl" style="background:#EBF6FB;color:#4DAACC">🤲 Contoh Komentar</div><div class="ccont"><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Nasi! Hangat... haannngat." (tiup seperti mendinginkan)</div></div><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Kerupuk! Kres... kres... kres." (kunyah berlebihan, tirukan suara)</div></div><div class="dbubble"><span class="who">Anak:</span><div class="bub bub-a">[meniru "kres" atau "sluuurp"] = LUAR BIASA! Ini cikal bakal kata!</div></div></div></div></div>
+        <div id="t3c" class="tab-pnl"><div class="tip-list"><div class="tip-item"><span class="tip-ic">🍽️</span><div>Variasikan tekstur: renyah, kenyal, lembut, serat. Mulut yang terasah = bicara lebih mudah.</div></div><div class="tip-item"><span class="tip-ic">🔊</span><div>Gunakan banyak onomatopoeia: kres, gluk, nyam. Bunyi-bunyi ini lebih mudah ditiru anak.</div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BERMAIN PAGI -->
+  <div class="tsec">
+    <div class="time-hdr"><span class="time-em">🧩</span><span class="time-lbl">Sesi Bermain Pagi</span><span class="time-clk">08:00–09:30</span></div>
+
+    <div class="card" data-tags="sensori verbal motorik">
+      <div class="card-hdr">
+        <div class="card-num" style="background:#EBF6FB;color:#4DAACC">4</div>
+        <div class="card-tw"><div class="card-title">Bermain Play-Doh / Tanah Liat</div><div class="tags"><span class="tag" style="background:#EBF6FB;color:#4DAACC">🤲 Sensori</span><span class="tag" style="background:#FFF0EB;color:#FF7F50">🗣 Verbal</span><span class="tag" style="background:#EDF8F1;color:#5BC47A">🏃 Motorik</span></div></div>
+        <div class="card-right"><button class="chk">✓</button><svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="itabs"><button class="itab active" data-t="t4a">🎯 Tujuan</button><button class="itab" data-t="t4b">💬 Contoh</button><button class="itab" data-t="t4c">💡 Tips</button></div>
+        <div id="t4a" class="tab-pnl show"><div class="tbox"><ul><li>Stimulasi proprioseptif (tekanan tangan) yang menenangkan sistem saraf</li><li>Memperkenalkan kata kerja: dorong, tekan, pilin, gulung, pipih</li><li>Melatih motorik halus yang mendukung kontrol otot bicara</li></ul></div></div>
+        <div id="t4b" class="tab-pnl"><div class="cblock" style="border-color:#C2E4F5"><div class="clbl" style="background:#EBF6FB;color:#4DAACC">🤲 Contoh Verbalisasi</div><div class="ccont"><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Ayo dorong! Doroong... pipih deh!" (dorong play-doh bersama)</div></div><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Gulung... gulung... jadi panjang! Cacing! 🐛"</div></div><div class="dbubble"><span class="who">Anak:</span><div class="bub bub-a">[menunjuk atau mulai membentuk sendiri] → ikuti dan beri nama karyanya</div></div></div></div></div>
+        <div id="t4c" class="tab-pnl"><div class="tip-list"><div class="tip-item"><span class="tip-ic">⏱️</span><div><div class="dur">15–20 menit</div>Jangan akhiri sesi terlalu cepat. Anak perlu waktu untuk masuk ke mode eksplorasi.</div></div><div class="tip-item"><span class="tip-ic">👐</span><div>Biarkan anak yang memimpin bentuk. Jangan koreksi — ikuti imajinasinya.</div></div></div></div>
+      </div>
+    </div>
+
+    <div class="card" data-tags="verbal motorik">
+      <div class="card-hdr">
+        <div class="card-num" style="background:#FFF0EB;color:#FF7F50">5</div>
+        <div class="card-tw"><div class="card-title">Meniup Gelembung Sabun</div><div class="tags"><span class="tag" style="background:#FFF0EB;color:#FF7F50">🗣 Verbal</span><span class="tag" style="background:#EDF8F1;color:#5BC47A">🏃 Motorik</span></div></div>
+        <div class="card-right"><button class="chk">✓</button><svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="itabs"><button class="itab active" data-t="t5a">🎯 Tujuan</button><button class="itab" data-t="t5b">💬 Contoh</button><button class="itab" data-t="t5c">💡 Tips</button></div>
+        <div id="t5a" class="tab-pnl show"><div class="tbox"><ul><li>Melatih kontrol napas dan bibir yang penting untuk produksi suara vokal</li><li>Mengenalkan kata: tiup, pop, terbang, besar, kecil</li><li>Menciptakan momen antusias bersama — emosi positif mempercepat belajar bahasa</li></ul></div></div>
+        <div id="t5b" class="tab-pnl"><div class="cblock" style="border-color:#FFD4C2"><div class="clbl" style="background:#FFF0EB;color:#FF7F50">🗣 Skrip Bermain</div><div class="ccont"><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Ayo tiup! Fuuuh..." (tunjukkan cara tiup, berlebihan)</div></div><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Gelembung! Terbang! Tangkap! Pop!" (pura-pura melompat menangkap)</div></div><div class="dbubble"><span class="who">Anak:</span><div class="bub bub-a">[mencoba meniup] → "Wah Adek tiup! Hembuss!"</div></div></div></div></div>
+        <div id="t5c" class="tab-pnl"><div class="tip-list"><div class="tip-item"><span class="tip-ic">💨</span><div><div class="dur">10 menit</div>Kontrol napas saat meniup = latihan langsung untuk produksi konsonan. Sangat efektif.</div></div><div class="tip-item"><span class="tip-ic">🎉</span><div>Tepuk tangan dan sorak setiap gelembung. Antusiasme orang tua = motivasi anak.</div></div></div></div>
+      </div>
+    </div>
+
+    <div class="card" data-tags="verbal motorik sensori">
+      <div class="card-hdr">
+        <div class="card-num" style="background:#EDF8F1;color:#5BC47A">6</div>
+        <div class="card-tw"><div class="card-title">Bernyanyi & Gerak (Lagu Anak)</div><div class="tags"><span class="tag" style="background:#FFF0EB;color:#FF7F50">🗣 Verbal</span><span class="tag" style="background:#EDF8F1;color:#5BC47A">🏃 Motorik</span><span class="tag" style="background:#EBF6FB;color:#4DAACC">🤲 Sensori</span></div></div>
+        <div class="card-right"><button class="chk">✓</button><svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="itabs"><button class="itab active" data-t="t6a">🎯 Tujuan</button><button class="itab" data-t="t6b">💬 Contoh</button><button class="itab" data-t="t6c">💡 Tips</button></div>
+        <div id="t6a" class="tab-pnl show"><div class="tbox"><ul><li>Lagu membangun memori kata lebih kuat dari percakapan biasa (melodi = pengait memori)</li><li>Gerakan tubuh merangsang area otak yang terhubung ke bahasa</li><li>Ritme dan intonasi lagu melatih prosodi bicara</li></ul></div></div>
+        <div id="t6b" class="tab-pnl"><div class="cblock" style="border-color:#FFD4C2"><div class="clbl" style="background:#FFF0EB;color:#FF7F50">🗣 Tips Bernyanyi</div><div class="ccont"><div class="dbubble"><span class="who">Cara:</span><div class="bub bub-o">Pilih 3-4 lagu favorit dan putar SETIAP HARI. Repetisi adalah kunci.</div></div><div class="dbubble"><span class="who">Trik:</span><div class="bub bub-n">Berhenti sebelum kata akhir: "Balonku ada li..." → tunggu anak melengkapi. Sangat efektif!</div></div></div></div></div>
+        <div id="t6c" class="tab-pnl"><div class="tip-list"><div class="tip-item"><span class="tip-ic">🎵</span><div><div class="dur">10–15 menit</div>"Kepala Pundak Lutut Kaki" dan "Balonku" sangat direkomendasikan — banyak kata benda dan gerakan.</div></div><div class="tip-item"><span class="tip-ic">🔂</span><div>Ulangi lagu yang sama berkali-kali. Jangan ganti lagu terlalu cepat.</div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KREATIF SIANG -->
+  <div class="tsec">
+    <div class="time-hdr"><span class="time-em">🎭</span><span class="time-lbl">Bermain Kreatif Siang</span><span class="time-clk">10:00–11:30</span></div>
+
+    <div class="card" data-tags="verbal sosial">
+      <div class="card-hdr">
+        <div class="card-num" style="background:#F7EDFB;color:#C97DD5">7</div>
+        <div class="card-tw"><div class="card-title">Bermain Peran Sederhana</div><div class="tags"><span class="tag" style="background:#FFF0EB;color:#FF7F50">🗣 Verbal</span><span class="tag" style="background:#F7EDFB;color:#C97DD5">👫 Sosial</span></div></div>
+        <div class="card-right"><button class="chk">✓</button><svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="itabs"><button class="itab active" data-t="t7a">🎯 Tujuan</button><button class="itab" data-t="t7b">💬 Contoh</button><button class="itab" data-t="t7c">💡 Tips</button></div>
+        <div id="t7a" class="tab-pnl show"><div class="tbox"><ul><li>Mengembangkan bahasa fungsional dalam konteks sosial nyata</li><li>Melatih giliran bicara (turn-taking) — fondasi percakapan</li><li>Membangun pemahaman situasi (semantik kontekstual)</li></ul></div></div>
+        <div id="t7b" class="tab-pnl"><div class="cblock" style="border-color:#E2C5EB"><div class="clbl" style="background:#F7EDFB;color:#C97DD5">👫 Skenario: Masak-Masakan</div><div class="ccont"><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Ayo masak! Adek mau masak apa? Mie? Nasi?"</div></div><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Aduk! Aduk-aduk... panas nih! Haati-hati!"</div></div><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Mmm... wangi! Enak? Mau coba?" (pura-pura makan)</div></div></div></div><div class="cblock" style="border-color:#FFD4C2"><div class="clbl" style="background:#FFF0EB;color:#FF7F50">🗣 Skenario: Dokter-Dokteran</div><div class="ccont"><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Aduh... sakit perut! Dokter tolong!" (pura-pura menangis)</div></div><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Dokternya periksa ya. Ini disuntik dulu. Aduuh! Sakit!" (dramatis)</div></div></div></div></div>
+        <div id="t7c" class="tab-pnl"><div class="tip-list"><div class="tip-item"><span class="tip-ic">🎬</span><div><div class="dur">15–20 menit</div>Biarkan anak yang mulai dan tentukan peran. Jangan pimpin permainan — ikuti dulu.</div></div><div class="tip-item"><span class="tip-ic">😱</span><div>Reaksi dramatis orang tua memotivasi anak untuk terus berkomunikasi.</div></div></div></div>
+      </div>
+    </div>
+
+    <div class="card" data-tags="verbal sensori">
+      <div class="card-hdr">
+        <div class="card-num" style="background:#EBF6FB;color:#4DAACC">8</div>
+        <div class="card-tw"><div class="card-title">Puzzle & Sortir Warna/Bentuk</div><div class="tags"><span class="tag" style="background:#FFF0EB;color:#FF7F50">🗣 Verbal</span><span class="tag" style="background:#EBF6FB;color:#4DAACC">🤲 Sensori</span></div></div>
+        <div class="card-right"><button class="chk">✓</button><svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="itabs"><button class="itab active" data-t="t8a">🎯 Tujuan</button><button class="itab" data-t="t8b">💬 Contoh</button><button class="itab" data-t="t8c">💡 Tips</button></div>
+        <div id="t8a" class="tab-pnl show"><div class="tbox"><ul><li>Memperkenalkan kosakata konsep: warna, bentuk, sama, berbeda</li><li>Melatih konsentrasi dan toleransi frustrasi secara bertahap</li><li>Stimulasi taktil dari pegang dan pasang kepingan puzzle</li></ul></div></div>
+        <div id="t8b" class="tab-pnl"><div class="cblock" style="border-color:#FFD4C2"><div class="clbl" style="background:#FFF0EB;color:#FF7F50">🗣 Contoh Verbalisasi</div><div class="ccont"><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Ini kepingan merah. Taruh mana ya? Sana? Sini?"</div></div><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Cocok! Masuk! Yeeey! 🎉" (rayakan berlebihan tiap kepingan masuk)</div></div></div></div></div>
+        <div id="t8c" class="tab-pnl"><div class="tip-list"><div class="tip-item"><span class="tip-ic">🧩</span><div>Gunakan puzzle 3–6 keping besar. Terlalu sulit = frustrasi = anak menolak aktivitas.</div></div><div class="tip-item"><span class="tip-ic">🆘</span><div>Jika anak mulai frustrasi setelah 3 menit, bantu langsung. Tujuan adalah pengalaman positif.</div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SORE -->
+  <div class="tsec">
+    <div class="time-hdr"><span class="time-em">🌳</span><span class="time-lbl">Aktivitas Luar & Sensori Sore</span><span class="time-clk">15:00–16:30</span></div>
+
+    <div class="card" data-tags="sensori motorik">
+      <div class="card-hdr">
+        <div class="card-num" style="background:#EDF8F1;color:#5BC47A">9</div>
+        <div class="card-tw"><div class="card-title">Main Air atau Pasir</div><div class="tags"><span class="tag" style="background:#EBF6FB;color:#4DAACC">🤲 Sensori</span><span class="tag" style="background:#EDF8F1;color:#5BC47A">🏃 Motorik</span></div></div>
+        <div class="card-right"><button class="chk">✓</button><svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="itabs"><button class="itab active" data-t="t9a">🎯 Tujuan</button><button class="itab" data-t="t9b">💬 Contoh</button><button class="itab" data-t="t9c">💡 Tips</button></div>
+        <div id="t9a" class="tab-pnl show"><div class="tbox"><ul><li>Input taktil dan proprioseptif yang mengatur sistem saraf</li><li>Memperkenalkan kata sifat: basah, kering, dingin, penuh, kosong</li><li>Bermain yang tidak ada tekanan = anak lebih banyak bersuara alami</li></ul></div></div>
+        <div id="t9b" class="tab-pnl"><div class="cblock" style="border-color:#C2E4F5"><div class="clbl" style="background:#EBF6FB;color:#4DAACC">🌊 Bermain Air</div><div class="ccont"><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Ciiprat! Adek kena air! Byurr!" (pura-pura kaget)</div></div><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Tuang... tuang... penuh! Tumpah! Eh!" (lebay)</div></div><div class="dbubble"><span class="who">Anak:</span><div class="bub bub-a">[menirukan "byurr"] → ini sudah KATA! Apresiasi!</div></div></div></div></div>
+        <div id="t9c" class="tab-pnl"><div class="tip-list"><div class="tip-item"><span class="tip-ic">🧪</span><div><div class="dur">20–30 menit</div>Anak yang terpenuhi kebutuhan sensorinya jauh lebih siap berkomunikasi.</div></div><div class="tip-item"><span class="tip-ic">💧</span><div>Alternatif: baskom berisi beras, kacang-kacangan, atau spaghetti mentah. Efek sensorik serupa.</div></div></div></div>
+      </div>
+    </div>
+
+    <div class="card" data-tags="verbal motorik sensori">
+      <div class="card-hdr">
+        <div class="card-num" style="background:#FFF0EB;color:#FF7F50">10</div>
+        <div class="card-tw"><div class="card-title">Jalan & Komentari Lingkungan</div><div class="tags"><span class="tag" style="background:#FFF0EB;color:#FF7F50">🗣 Verbal</span><span class="tag" style="background:#EDF8F1;color:#5BC47A">🏃 Motorik</span><span class="tag" style="background:#EBF6FB;color:#4DAACC">🤲 Sensori</span></div></div>
+        <div class="card-right"><button class="chk">✓</button><svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="itabs"><button class="itab active" data-t="t10a">🎯 Tujuan</button><button class="itab" data-t="t10b">💬 Contoh</button><button class="itab" data-t="t10c">💡 Tips</button></div>
+        <div id="t10a" class="tab-pnl show"><div class="tbox"><ul><li>Memperluas kosakata melalui pengalaman nyata di dunia (bukan gambar)</li><li>Melatih perhatian bersama (joint attention) saat menunjuk objek</li><li>Aktivitas fisik berat membantu regulasi sensori sebelum sesi terapi</li></ul></div></div>
+        <div id="t10b" class="tab-pnl"><div class="cblock" style="border-color:#FFD4C2"><div class="clbl" style="background:#FFF0EB;color:#FF7F50">🗣 Running Commentary</div><div class="ccont"><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Lihat! Ada kucing! Kucing hitam! Meong... 🐈"</div></div><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Motor lewat! Bruum! Bruum!" (tirukan suara motor)</div></div><div class="dbubble"><span class="who">Anak:</span><div class="bub bub-a">[menunjuk sesuatu] → "Oh! Adek lihat apa? Pohon! Besar ya!"</div></div></div></div></div>
+        <div id="t10c" class="tab-pnl"><div class="tip-list"><div class="tip-item"><span class="tip-ic">📍</span><div>Ikuti arah tunjuk anak — itu adalah bentuk komunikasi awal yang harus direspons segera.</div></div><div class="tip-item"><span class="tip-ic">🗣️</span><div>Kalimat sangat pendek: maks 2 kata lebih dari yang bisa diucapkan anak.</div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TERAPI -->
+  <div class="tsec">
+    <div class="time-hdr"><span class="time-em">❤️</span><span class="time-lbl">Sesi Terapi di Rumah</span><span class="time-clk">16:30–17:00</span></div>
+
+    <div class="card" data-tags="terapi sosial verbal">
+      <div class="card-hdr">
+        <div class="card-num" style="background:#FFF8EB;color:#F5A623">11</div>
+        <div class="card-tw"><div class="card-title">DIR/Floortime — Ikuti Anak</div><div class="tags"><span class="tag" style="background:#FFF8EB;color:#F5A623">❤️ Terapi</span><span class="tag" style="background:#F7EDFB;color:#C97DD5">👫 Sosial</span><span class="tag" style="background:#FFF0EB;color:#FF7F50">🗣 Verbal</span></div></div>
+        <div class="card-right"><button class="chk">✓</button><svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="itabs"><button class="itab active" data-t="t11a">🎯 Tujuan</button><button class="itab" data-t="t11b">💬 Contoh</button><button class="itab" data-t="t11c">💡 Tips</button></div>
+        <div id="t11a" class="tab-pnl show"><div class="tbox"><ul><li>Membangun koneksi emosional sebagai fondasi komunikasi</li><li>Mendorong inisiasi komunikasi dari anak (bukan reaktif)</li><li>Memperluas lingkaran interaksi (open and close circles)</li></ul></div></div>
+        <div id="t11b" class="tab-pnl"><div class="cblock" style="border-color:#FFE4A8"><div class="clbl" style="background:#FFF8EB;color:#F5A623">❤️ 4 Langkah DIR/Floortime</div><div class="ccont"><div class="dbubble"><span class="who">1.</span><div class="bub bub-o">Masuk ke dunia anak — duduk di lantai setinggi anak, perhatikan apa yang dia lakukan. Jangan langsung ajak bermain.</div></div><div class="dbubble"><span class="who">2.</span><div class="bub bub-o">Ikuti minatnya — jika anak susun balok, mulai susun juga di sebelahnya. Jangan arahkan.</div></div><div class="dbubble"><span class="who">3.</span><div class="bub bub-o">Masuk & ganggu dengan tujuan — pura-pura jatuhkan baloknya: "Aduh! Jatuh! Eh maaf!" Tunggu respons.</div></div><div class="dbubble"><span class="who">4.</span><div class="bub bub-o">Ikuti respons — apapun yang dilakukan anak (marah, ketawa, rebuild), ikuti dan tambahkan narasi.</div></div></div></div></div>
+        <div id="t11c" class="tab-pnl"><div class="tip-list"><div class="tip-item"><span class="tip-ic">⏱️</span><div><div class="dur">15 menit minimum</div>Lakukan setiap hari. Jika mampu, 2x sehari (pagi dan sore).</div></div><div class="tip-item"><span class="tip-ic">📵</span><div>Tidak ada HP. 15 menit konsentrasi penuh lebih berharga dari 1 jam setengah hadir.</div></div><div class="tip-item"><span class="tip-ic">🎯</span><div>Tujuan bukan anak bicara. Tujuan adalah anak mau berinteraksi. Bicara akan mengikuti.</div></div></div></div>
+      </div>
+    </div>
+
+    <div class="card" data-tags="terapi verbal motorik">
+      <div class="card-hdr">
+        <div class="card-num" style="background:#FFF8EB;color:#F5A623">12</div>
+        <div class="card-tw"><div class="card-title">Latihan Imitasi Mulut di Cermin</div><div class="tags"><span class="tag" style="background:#FFF8EB;color:#F5A623">❤️ Terapi</span><span class="tag" style="background:#FFF0EB;color:#FF7F50">🗣 Verbal</span><span class="tag" style="background:#EDF8F1;color:#5BC47A">🏃 Motorik</span></div></div>
+        <div class="card-right"><button class="chk">✓</button><svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="itabs"><button class="itab active" data-t="t12a">🎯 Tujuan</button><button class="itab" data-t="t12b">💬 Contoh</button><button class="itab" data-t="t12c">💡 Tips</button></div>
+        <div id="t12a" class="tab-pnl show"><div class="tbox"><ul><li>Melatih kontrol otot wajah (bibir, rahang, lidah) yang digunakan untuk bicara</li><li>Membangun kemampuan imitasi motorik oral — prasyarat imitasi suara</li><li>Menjadikan cermin sebagai alat bermain yang menyenangkan</li></ul></div></div>
+        <div id="t12b" class="tab-pnl"><div class="cblock" style="border-color:#FFE4A8"><div class="clbl" style="background:#FFF8EB;color:#F5A623">❤️ Gerakan yang Dilatih</div><div class="ccont"><div class="dbubble"><span class="who">😮</span><div class="bub bub-o">Mulut bulat O — "Lihat! Bulet! O! Kayak donat!" → tunggu anak tiru</div></div><div class="dbubble"><span class="who">😁</span><div class="bub bub-o">Senyum lebar — "Hehehe! Gigi kelihatan! Gigi adek mana?"</div></div><div class="dbubble"><span class="who">😛</span><div class="bub bub-o">Julur lidah — "Hmm... kayak anjing! Wuf wuf!"</div></div><div class="dbubble"><span class="who">💋</span><div class="bub bub-o">Cipika cipiki — "Muah! Muah muah!" (latih kontrol bibir untuk konsonan M dan P)</div></div></div></div></div>
+        <div id="t12c" class="tab-pnl"><div class="tip-list"><div class="tip-item"><span class="tip-ic">⏱️</span><div><div class="dur">5–8 menit</div>Jadikan singkat, lucu, dan berakhir dengan apresiasi besar.</div></div><div class="tip-item"><span class="tip-ic">🏆</span><div>Apresiasi setiap usaha, bahkan yang tidak sempurna.</div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MALAM -->
+  <div class="tsec">
+    <div class="time-hdr"><span class="time-em">🌙</span><span class="time-lbl">Rutinitas Malam & Tidur</span><span class="time-clk">18:30–20:00</span></div>
+
+    <div class="card" data-tags="verbal sensori">
+      <div class="card-hdr">
+        <div class="card-num" style="background:#EBF6FB;color:#4DAACC">13</div>
+        <div class="card-tw"><div class="card-title">Mandi Verbalisasi</div><div class="tags"><span class="tag" style="background:#FFF0EB;color:#FF7F50">🗣 Verbal</span><span class="tag" style="background:#EBF6FB;color:#4DAACC">🤲 Sensori</span></div></div>
+        <div class="card-right"><button class="chk">✓</button><svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="itabs"><button class="itab active" data-t="t13a">🎯 Tujuan</button><button class="itab" data-t="t13b">💬 Contoh</button><button class="itab" data-t="t13c">💡 Tips</button></div>
+        <div id="t13a" class="tab-pnl show"><div class="tbox"><ul><li>Memanfaatkan rutinitas wajib sebagai sesi bahasa tanpa beban</li><li>Memperkenalkan kata kerja rutinitas: siram, gosok, bilas, keringkan</li><li>Sensasi air membantu stimulasi taktil sebelum tidur</li></ul></div></div>
+        <div id="t13b" class="tab-pnl"><div class="cblock" style="border-color:#C2E4F5"><div class="clbl" style="background:#EBF6FB;color:#4DAACC">🚿 Contoh Verbalisasi Mandi</div><div class="ccont"><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Airnya dingin! Brrr! Atau hangat? Haannngat~"</div></div><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Gosok sabun! Busa! Banyak bueeesa!"</div></div><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Bersih! Wangi! Mmm... harum~" (hirup aroma sampo berlebihan)</div></div></div></div></div>
+        <div id="t13c" class="tab-pnl"><div class="tip-list"><div class="tip-item"><span class="tip-ic">🚿</span><div>Mandi adalah "sesi bahasa gratis" yang sudah ada setiap hari. Tidak perlu waktu atau alat tambahan.</div></div></div></div>
+      </div>
+    </div>
+
+    <div class="card" data-tags="verbal sosial">
+      <div class="card-hdr">
+        <div class="card-num" style="background:#FFF0EB;color:#FF7F50">14</div>
+        <div class="card-tw"><div class="card-title">Buku Malam & Ceritakan Hari</div><div class="tags"><span class="tag" style="background:#FFF0EB;color:#FF7F50">🗣 Verbal</span><span class="tag" style="background:#F7EDFB;color:#C97DD5">👫 Sosial</span></div></div>
+        <div class="card-right"><button class="chk">✓</button><svg class="chev" viewBox="0 0 20 20" fill="none"><path d="M5 7l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="card-body">
+        <div class="itabs"><button class="itab active" data-t="t14a">🎯 Tujuan</button><button class="itab" data-t="t14b">💬 Contoh</button><button class="itab" data-t="t14c">💡 Tips</button></div>
+        <div id="t14a" class="tab-pnl show"><div class="tbox"><ul><li>Membangun kebiasaan membaca yang terhubung ke rasa aman dan tidur</li><li>Menguatkan memori episodik hari itu melalui narasi ulang</li><li>Eksposur bahasa terakhir sebelum tidur — otak memproses selama tidur</li></ul></div></div>
+        <div id="t14b" class="tab-pnl"><div class="cblock" style="border-color:#FFD4C2"><div class="clbl" style="background:#FFF0EB;color:#FF7F50">🗣 Ceritakan Hari Ini</div><div class="ccont"><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Tadi Adek main pasir ya. Adek tuang-tuang air. Seru banget!"</div></div><div class="dbubble"><span class="who">Ortu:</span><div class="bub bub-o">"Terus makan kerupuk. Kres kres kres!" (tirukan suara kerupuk)</div></div><div class="dbubble"><span class="who">Catatan:</span><div class="bub bub-n">Anak mendengarkan narasi tentang dirinya sendiri. Ini membangun kesadaran diri dan memori episodik yang terhubung ke bahasa.</div></div></div></div></div>
+        <div id="t14c" class="tab-pnl"><div class="tip-list"><div class="tip-item"><span class="tip-ic">📖</span><div><div class="dur">10–15 menit</div>Buku terbaik: gambar besar, sedikit kata, karakter hewan.</div></div><div class="tip-item"><span class="tip-ic">🌙</span><div>Akhiri dengan kalimat yang sama setiap malam. "Sayang Adek. Selamat tidur." Prediktabilitas = keamanan.</div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end pg-aktivitas -->
+
+<!-- PAGE TIPS -->
+<div id="pg-tips" class="page">
+  <div class="tp-sec">
+    <h2>✅ Lakukan & Hindari</h2>
+    <div class="do-card"><strong>✅ Lakukan Ini</strong>
+      <div class="cli"><span>💬</span><span>Bicara <em>kepada</em> anak terus, meski tidak ada respons balik</span></div>
+      <div class="cli"><span>🔄</span><span>Ulangi kata yang sama setiap hari dalam konteks berbeda</span></div>
+      <div class="cli"><span>🎉</span><span>Apresiasi setiap usaha: tunjuk, suara, kata berapapun</span></div>
+      <div class="cli"><span>⏳</span><span>Tunggu 5–10 detik setelah bertanya sebelum mengisi jawaban</span></div>
+      <div class="cli"><span>🎯</span><span>Kalimat pendek: 1–2 kata di atas level anak saat ini</span></div>
+      <div class="cli"><span>🎭</span><span>Reaksi lebay dan dramatis untuk momen seru</span></div>
+    </div>
+    <div class="dont-card"><strong>🚫 Hindari Ini</strong>
+      <div class="cli"><span>❌</span><span>Memaksa anak mengulang kata dengan benar dulu</span></div>
+      <div class="cli"><span>❌</span><span>Tanya "Itu apa?" tanpa tahu anak sudah tahu kata itu</span></div>
+      <div class="cli"><span>❌</span><span>Kalimat panjang atau penjelasan kompleks</span></div>
+      <div class="cli"><span>❌</span><span>Membandingkan dengan anak lain atau milestone umum</span></div>
+      <div class="cli"><span>❌</span><span>Mengoreksi ucapan anak di depannya secara langsung</span></div>
+      <div class="cli"><span>❌</span><span>Terlalu banyak layar/video tanpa interaksi manusia nyata</span></div>
+    </div>
+  </div>
+  <div class="tp-sec">
+    <h2>🧠 Memahami Speech Delay</h2>
+    <div class="about-card"><h3>Kenapa anak speech delay sering lebih diam?</h3><p>Banyak anak speech delay memiliki sistem saraf yang butuh lebih banyak input sebelum siap mengeluarkan output. Ini bukan malas atau tidak mau — otaknya sedang bekerja keras menyerap bahasa yang belum bisa dikeluarkan. Stimulasi sensori membantu sistem saraf mencapai kondisi optimal untuk belajar bahasa.</p></div>
+    <div class="about-card"><h3>Apa itu "language input" dan kenapa penting?</h3><p>Anak belajar bahasa dengan cara mendengar ribuan kata dalam konteks bermakna. Semakin banyak orang tua berbicara kepada anak (bukan meminta anak bicara), semakin besar "bank kata" yang terkumpul. Kata-kata yang sudah di bank ini yang nantinya keluar saat anak siap.</p></div>
+    <div class="about-card"><h3>Kapan perlu ke profesional?</h3><p>Aktivitas ini adalah suplemen, bukan pengganti. Idealnya anak ditangani oleh <strong>terapis wicara</strong> dan dievaluasi oleh <strong>dokter tumbuh kembang</strong>. Intervensi dini (sebelum usia 4–5 tahun) memberikan hasil terbaik.</p></div>
+  </div>
+  <div class="tp-sec">
+    <h2>🏷️ Legenda Kategori</h2>
+    <div class="legend-row">
+      <div class="legend-item"><div class="ldot" style="background:#FF7F50"></div><span>Verbal — stimulasi bahasa & bicara</span></div>
+      <div class="legend-item"><div class="ldot" style="background:#4DAACC"></div><span>Sensori — taktil, proprioseptif</span></div>
+      <div class="legend-item"><div class="ldot" style="background:#5BC47A"></div><span>Motorik — kasar & halus</span></div>
+      <div class="legend-item"><div class="ldot" style="background:#C97DD5"></div><span>Sosial — interaksi & giliran bicara</span></div>
+      <div class="legend-item"><div class="ldot" style="background:#F5A623"></div><span>Terapi — teknik terapi terstruktur</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE TENTANG -->
+<div id="pg-tentang" class="page">
+  <div class="about-card"><h3>📋 Tentang Panduan Ini</h3><p>Panduan ini dibuat sebagai referensi harian untuk orang tua anak usia 3 tahun 1 bulan dengan speech delay. Semua aktivitas dirancang agar bisa dilakukan di rumah, tidak memerlukan alat mahal, dan terintegrasi dalam rutinitas harian.</p></div>
+  <div class="about-card"><h3>🔬 Pendekatan yang Digunakan</h3><ul style="padding-left:18px;line-height:2;font-size:14px"><li><strong>DIR/Floortime</strong> — ikuti minat anak, masuk ke dunianya</li><li><strong>Natural Language Acquisition</strong> — bahasa melalui pengalaman nyata</li><li><strong>Sensory Integration</strong> — penuhi kebutuhan sensori untuk kesiapan belajar</li><li><strong>Aided Language Input</strong> — model bahasa tanpa tekanan untuk respons</li></ul></div>
+  <div class="about-card"><h3>⚠️ Perhatian Penting</h3><p>Panduan ini bukan pengganti terapi profesional. Segera konsultasikan dengan <strong>dokter tumbuh kembang anak</strong> dan <strong>terapis wicara</strong> jika belum melakukannya.</p></div>
+</div>
+
+</main>
+
+<!-- STAT BAR -->
+<div id="statbar">
+  <div class="stat-item"><div class="stat-num" id="stat-done">0</div><div class="stat-lbl">Selesai</div></div>
+  <div class="stat-item"><div class="stat-num">14</div><div class="stat-lbl">Total</div></div>
+  <div class="stat-item"><div class="stat-num" id="stat-pct">0%</div><div class="stat-lbl">Progress</div></div>
+  <button class="reset-btn" id="btn-reset">↺ Reset</button>
+</div>
+
+<script>
+(function(){
+  // NAV TABS
+  document.querySelectorAll('.nav-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active')});
+      document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.page).classList.add('active');
+      window.scrollTo(0,0);
+    });
+  });
+
+  // CARD TOGGLE
+  document.querySelectorAll('.card-hdr').forEach(function(hdr){
+    hdr.addEventListener('click', function(e){
+      if(e.target.closest('.chk')) return;
+      var body = hdr.nextElementSibling;
+      var open = body.classList.contains('show');
+      body.classList.toggle('show', !open);
+      hdr.classList.toggle('open', !open);
+    });
+  });
+
+  // INNER TABS
+  document.querySelectorAll('.itab').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var cb = btn.closest('.card-body');
+      cb.querySelectorAll('.itab').forEach(function(t){t.classList.remove('active')});
+      cb.querySelectorAll('.tab-pnl').forEach(function(p){p.classList.remove('show')});
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.t).classList.add('show');
+    });
+  });
+
+  // CHECK BUTTONS
+  document.querySelectorAll('.chk').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      btn.classList.toggle('done');
+      updateProgress();
+    });
+  });
+
+  // FILTER
+  document.querySelectorAll('.fchip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      var tag = chip.dataset.filter;
+      document.querySelectorAll('.fchip').forEach(function(c){c.classList.remove('active')});
+      chip.classList.add('active');
+      document.querySelectorAll('.card').forEach(function(card){
+        if(tag==='all'){card.classList.remove('hidden');return;}
+        card.classList.toggle('hidden', (card.dataset.tags||'').indexOf(tag)===-1);
+      });
+      // hide/show empty tsec
+      document.querySelectorAll('.tsec').forEach(function(sec){
+        var visible = sec.querySelectorAll('.card:not(.hidden)').length > 0;
+        sec.style.display = visible ? '' : 'none';
+      });
+    });
+  });
+
+  // RESET
+  document.getElementById('btn-reset').addEventListener('click', function(){
+    if(!confirm('Reset semua checklist hari ini?')) return;
+    document.querySelectorAll('.chk').forEach(function(b){b.classList.remove('done')});
+    updateProgress();
+  });
+
+  function updateProgress(){
+    var done = document.querySelectorAll('.chk.done').length;
+    var pct = Math.round(done/14*100);
+    document.getElementById('stat-done').textContent = done;
+    document.getElementById('stat-pct').textContent = pct+'%';
+    document.getElementById('prog-bar').style.width = pct+'%';
+    document.getElementById('prog-txt').textContent = done+' selesai hari ini';
+  }
+  updateProgress();
+})();
+</script>
+</body>
+</html>
