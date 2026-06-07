@@ -115,6 +115,34 @@ main{max-width:700px;margin:0 auto;padding:16px 14px 90px}
   #statbar{padding-bottom:calc(10px + env(safe-area-inset-bottom))}
   main{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
 }
+
+/* RIWAYAT PAGE */
+.rw-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.rw-hdr h2{font-family:'Nunito',sans-serif;font-size:16px;font-weight:800}
+.rw-clear{border:1.5px solid #FFD4C2;background:#FFF0EB;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;color:#FF7F50}
+.date-card{background:#fff;border:1.5px solid #F0E8DF;border-radius:16px;padding:14px;margin-bottom:12px;overflow:hidden}
+.date-card-hdr{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.date-label{font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:#2D2418}
+.date-sub{font-size:11px;color:#8A7A6A;margin-top:2px}
+.date-count{background:linear-gradient(135deg,#FF7F50,#F5A623);color:#fff;font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;padding:3px 10px;border-radius:99px;flex-shrink:0}
+.date-body{margin-top:12px;display:none}
+.date-body.show{display:block}
+.act-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #F0E8DF;font-size:13px}
+.act-item:last-child{border-bottom:none}
+.act-num{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:800;font-size:11px;flex-shrink:0}
+.act-info{flex:1}
+.act-title{font-weight:700;font-size:13px;color:#2D2418;line-height:1.2}
+.act-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px}
+.empty-state{text-align:center;padding:40px 20px;color:#8A7A6A}
+.empty-state .es-icon{font-size:40px;margin-bottom:12px}
+.empty-state p{font-size:14px;line-height:1.6}
+.today-banner{background:linear-gradient(135deg,#FF7F50,#F5A623);border-radius:12px;padding:14px 16px;margin-bottom:16px;color:#fff}
+.today-banner h3{font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;margin-bottom:4px}
+.today-banner p{font-size:12px;opacity:.9}
+.streak-row{display:flex;gap:8px;margin-bottom:16px}
+.streak-card{flex:1;background:#fff;border:1.5px solid #F0E8DF;border-radius:12px;padding:12px;text-align:center}
+.streak-num{font-family:'Nunito',sans-serif;font-weight:800;font-size:22px;color:#FF7F50;line-height:1}
+.streak-lbl{font-size:11px;color:#8A7A6A;font-weight:600;margin-top:4px}
 </style>
 </head>
 <body>
@@ -136,6 +164,7 @@ main{max-width:700px;margin:0 auto;padding:16px 14px 90px}
   <div class="nav">
     <button class="nav-btn active" data-page="pg-aktivitas">📋 Aktivitas</button>
     <button class="nav-btn" data-page="pg-tips">💡 Tips</button>
+    <button class="nav-btn" data-page="pg-riwayat">📅 Riwayat</button>
     <button class="nav-btn" data-page="pg-tentang">ℹ️ Tentang</button>
   </div>
 </div>
@@ -431,6 +460,24 @@ main{max-width:700px;margin:0 auto;padding:16px 14px 90px}
   <div class="about-card"><h3>⚠️ Perhatian Penting</h3><p>Panduan ini bukan pengganti terapi profesional. Segera konsultasikan dengan <strong>dokter tumbuh kembang anak</strong> dan <strong>terapis wicara</strong> jika belum melakukannya.</p></div>
 </div>
 
+
+<!-- PAGE RIWAYAT -->
+<div id="pg-riwayat" class="page">
+  <div class="today-banner">
+    <h3 id="rw-today-label">Hari ini</h3>
+    <p id="rw-today-sub">Memuat data...</p>
+  </div>
+  <div class="streak-row">
+    <div class="streak-card"><div class="streak-num" id="rw-total-hari">0</div><div class="streak-lbl">Hari Aktif</div></div>
+    <div class="streak-card"><div class="streak-num" id="rw-total-act">0</div><div class="streak-lbl">Total Aktivitas</div></div>
+    <div class="streak-card"><div class="streak-num" id="rw-avg">0</div><div class="streak-lbl">Rata-rata/Hari</div></div>
+  </div>
+  <div class="rw-hdr">
+    <h2>📅 Riwayat Aktivitas</h2>
+    <button class="rw-clear" id="btn-clear-history">🗑 Hapus Semua</button>
+  </div>
+  <div id="rw-list"></div>
+</div>
 </main>
 
 <!-- STAT BAR -->
@@ -443,21 +490,117 @@ main{max-width:700px;margin:0 auto;padding:16px 14px 90px}
 
 <script>
 (function(){
+
+  // ACTIVITY METADATA
+  var ACTS = [
+    {id:1,  title:'Sapa di Depan Cermin',           tags:['verbal','sosial'],   bg:'#FFF0EB',color:'#FF7F50'},
+    {id:2,  title:'Rutinitas Berpakaian Bernama',   tags:['verbal'],            bg:'#FFF0EB',color:'#FF7F50'},
+    {id:3,  title:'Eksplorasi Tekstur Makanan',     tags:['sensori','verbal'],  bg:'#EBF6FB',color:'#4DAACC'},
+    {id:4,  title:'Bermain Play-Doh / Tanah Liat',  tags:['sensori','verbal','motorik'], bg:'#EBF6FB',color:'#4DAACC'},
+    {id:5,  title:'Meniup Gelembung Sabun',         tags:['verbal','motorik'],  bg:'#FFF0EB',color:'#FF7F50'},
+    {id:6,  title:'Bernyanyi & Gerak (Lagu Anak)',  tags:['verbal','motorik','sensori'], bg:'#EDF8F1',color:'#5BC47A'},
+    {id:7,  title:'Bermain Peran Sederhana',        tags:['verbal','sosial'],   bg:'#F7EDFB',color:'#C97DD5'},
+    {id:8,  title:'Puzzle & Sortir Warna/Bentuk',   tags:['verbal','sensori'],  bg:'#EBF6FB',color:'#4DAACC'},
+    {id:9,  title:'Main Air atau Pasir',            tags:['sensori','motorik'], bg:'#EDF8F1',color:'#5BC47A'},
+    {id:10, title:'Jalan & Komentari Lingkungan',   tags:['verbal','motorik','sensori'], bg:'#FFF0EB',color:'#FF7F50'},
+    {id:11, title:'DIR/Floortime - Ikuti Anak',     tags:['terapi','sosial','verbal'],   bg:'#FFF8EB',color:'#F5A623'},
+    {id:12, title:'Latihan Imitasi Mulut di Cermin',tags:['terapi','verbal','motorik'],  bg:'#FFF8EB',color:'#F5A623'},
+    {id:13, title:'Mandi Verbalisasi',              tags:['verbal','sensori'],  bg:'#EBF6FB',color:'#4DAACC'},
+    {id:14, title:'Buku Malam & Ceritakan Hari',    tags:['verbal','sosial'],   bg:'#FFF0EB',color:'#FF7F50'}
+  ];
+
+  var TAG_COLOR = {
+    verbal:  {bg:'#FFF0EB',color:'#FF7F50',label:'Verbal'},
+    sensori: {bg:'#EBF6FB',color:'#4DAACC',label:'Sensori'},
+    motorik: {bg:'#EDF8F1',color:'#5BC47A',label:'Motorik'},
+    sosial:  {bg:'#F7EDFB',color:'#C97DD5',label:'Sosial'},
+    terapi:  {bg:'#FFF8EB',color:'#F5A623',label:'Terapi'}
+  };
+
+  var DAYS   = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  var MONTHS = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
+  function todayKey() {
+    var d = new Date();
+    var m = d.getMonth() + 1;
+    var dd = d.getDate();
+    return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (dd < 10 ? '0' : '') + dd;
+  }
+
+  function keyToDate(key) {
+    var p = key.split('-');
+    return new Date(parseInt(p[0]), parseInt(p[1]) - 1, parseInt(p[2]));
+  }
+
+  function formatDateLabel(key) {
+    var d = keyToDate(key);
+    var tk = todayKey();
+    var base = DAYS[d.getDay()] + ', ' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+    if (key === tk) return 'Hari Ini - ' + base;
+    var yd = new Date();
+    yd.setDate(yd.getDate() - 1);
+    var yk = yd.getFullYear() + '-' + (yd.getMonth()+1<10?'0':'') + (yd.getMonth()+1) + '-' + (yd.getDate()<10?'0':'') + yd.getDate();
+    if (key === yk) return 'Kemarin - ' + base;
+    return base;
+  }
+
+  // STORAGE
+  function saveToday(doneIds) {
+    var key = 'akt_' + todayKey();
+    if (doneIds.length > 0) {
+      localStorage.setItem(key, JSON.stringify(doneIds));
+    } else {
+      localStorage.removeItem(key);
+    }
+  }
+
+  function loadToday() {
+    var key = 'akt_' + todayKey();
+    try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) { return []; }
+  }
+
+  function getAllHistoryKeys() {
+    var keys = [];
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('akt_') === 0) keys.push(k);
+    }
+    keys.sort(function(a, b) { return a > b ? -1 : 1; });
+    return keys;
+  }
+
+  function getActById(id) {
+    for (var i = 0; i < ACTS.length; i++) {
+      if (ACTS[i].id === id) return ACTS[i];
+    }
+    return null;
+  }
+
+  // INIT - load today's saved state
+  var savedIds = loadToday();
+  document.querySelectorAll('.chk').forEach(function(btn, idx) {
+    var actId = idx + 1;
+    btn.dataset.actId = actId;
+    if (savedIds.indexOf(actId) !== -1) btn.classList.add('done');
+  });
+
   // NAV TABS
-  document.querySelectorAll('.nav-btn').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active')});
-      document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.nav-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
       btn.classList.add('active');
-      document.getElementById(btn.dataset.page).classList.add('active');
-      window.scrollTo(0,0);
+      var pid = btn.dataset.page;
+      document.getElementById(pid).classList.add('active');
+      if (pid === 'pg-riwayat') renderRiwayat();
+      window.scrollTo(0, 0);
     });
   });
 
   // CARD TOGGLE
-  document.querySelectorAll('.card-hdr').forEach(function(hdr){
-    hdr.addEventListener('click', function(e){
-      if(e.target.closest('.chk')) return;
+  document.querySelectorAll('.card-hdr').forEach(function(hdr) {
+    hdr.addEventListener('click', function(e) {
+      if (e.target.closest && e.target.closest('.chk')) return;
       var body = hdr.nextElementSibling;
       var open = body.classList.contains('show');
       body.classList.toggle('show', !open);
@@ -466,60 +609,147 @@ main{max-width:700px;margin:0 auto;padding:16px 14px 90px}
   });
 
   // INNER TABS
-  document.querySelectorAll('.itab').forEach(function(btn){
-    btn.addEventListener('click', function(e){
+  document.querySelectorAll('.itab').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
       e.stopPropagation();
       var cb = btn.closest('.card-body');
-      cb.querySelectorAll('.itab').forEach(function(t){t.classList.remove('active')});
-      cb.querySelectorAll('.tab-pnl').forEach(function(p){p.classList.remove('show')});
+      cb.querySelectorAll('.itab').forEach(function(t) { t.classList.remove('active'); });
+      cb.querySelectorAll('.tab-pnl').forEach(function(p) { p.classList.remove('show'); });
       btn.classList.add('active');
       document.getElementById(btn.dataset.t).classList.add('show');
     });
   });
 
   // CHECK BUTTONS
-  document.querySelectorAll('.chk').forEach(function(btn){
-    btn.addEventListener('click', function(e){
+  document.querySelectorAll('.chk').forEach(function(btn, idx) {
+    btn.dataset.actId = idx + 1;
+    btn.addEventListener('click', function(e) {
       e.stopPropagation();
       btn.classList.toggle('done');
+      var doneIds = [];
+      document.querySelectorAll('.chk.done').forEach(function(b) {
+        doneIds.push(parseInt(b.dataset.actId));
+      });
+      saveToday(doneIds);
       updateProgress();
     });
   });
 
   // FILTER
-  document.querySelectorAll('.fchip').forEach(function(chip){
-    chip.addEventListener('click', function(){
+  document.querySelectorAll('.fchip').forEach(function(chip) {
+    chip.addEventListener('click', function() {
       var tag = chip.dataset.filter;
-      document.querySelectorAll('.fchip').forEach(function(c){c.classList.remove('active')});
+      document.querySelectorAll('.fchip').forEach(function(c) { c.classList.remove('active'); });
       chip.classList.add('active');
-      document.querySelectorAll('.card').forEach(function(card){
-        if(tag==='all'){card.classList.remove('hidden');return;}
-        card.classList.toggle('hidden', (card.dataset.tags||'').indexOf(tag)===-1);
+      document.querySelectorAll('.card').forEach(function(card) {
+        if (tag === 'all') { card.classList.remove('hidden'); return; }
+        card.classList.toggle('hidden', (card.dataset.tags || '').indexOf(tag) === -1);
       });
-      // hide/show empty tsec
-      document.querySelectorAll('.tsec').forEach(function(sec){
+      document.querySelectorAll('.tsec').forEach(function(sec) {
         var visible = sec.querySelectorAll('.card:not(.hidden)').length > 0;
         sec.style.display = visible ? '' : 'none';
       });
     });
   });
 
-  // RESET
-  document.getElementById('btn-reset').addEventListener('click', function(){
-    if(!confirm('Reset semua checklist hari ini?')) return;
-    document.querySelectorAll('.chk').forEach(function(b){b.classList.remove('done')});
+  // RESET TODAY
+  document.getElementById('btn-reset').addEventListener('click', function() {
+    if (!confirm('Reset semua checklist hari ini?')) return;
+    document.querySelectorAll('.chk').forEach(function(b) { b.classList.remove('done'); });
+    saveToday([]);
     updateProgress();
   });
 
-  function updateProgress(){
+  // PROGRESS BAR
+  function updateProgress() {
     var done = document.querySelectorAll('.chk.done').length;
-    var pct = Math.round(done/14*100);
+    var pct = Math.round(done / 14 * 100);
     document.getElementById('stat-done').textContent = done;
-    document.getElementById('stat-pct').textContent = pct+'%';
-    document.getElementById('prog-bar').style.width = pct+'%';
-    document.getElementById('prog-txt').textContent = done+' selesai hari ini';
+    document.getElementById('stat-pct').textContent = pct + '%';
+    document.getElementById('prog-bar').style.width = pct + '%';
+    document.getElementById('prog-txt').textContent = done + ' selesai hari ini';
   }
   updateProgress();
+
+  // RENDER RIWAYAT
+  function renderRiwayat() {
+    var keys = getAllHistoryKeys();
+    var list = document.getElementById('rw-list');
+
+    var totalAct = 0;
+    for (var i = 0; i < keys.length; i++) {
+      try { totalAct += JSON.parse(localStorage.getItem(keys[i]) || '[]').length; } catch(e) {}
+    }
+
+    document.getElementById('rw-total-hari').textContent = keys.length;
+    document.getElementById('rw-total-act').textContent = totalAct;
+    document.getElementById('rw-avg').textContent = keys.length > 0 ? Math.round(totalAct / keys.length) : 0;
+
+    var todayIds = loadToday();
+    var now = new Date();
+    document.getElementById('rw-today-label').textContent = DAYS[now.getDay()] + ', ' + now.getDate() + ' ' + MONTHS[now.getMonth()] + ' ' + now.getFullYear();
+    document.getElementById('rw-today-sub').textContent = todayIds.length > 0
+      ? todayIds.length + ' dari 14 aktivitas selesai hari ini'
+      : 'Belum ada aktivitas yang diselesaikan hari ini';
+
+    if (keys.length === 0) {
+      list.innerHTML = '<div class="empty-state"><div class="es-icon">&#128203;</div><p>Belum ada riwayat aktivitas.<br>Centang aktivitas di tab Aktivitas<br>untuk mulai mencatat!</p></div>';
+      return;
+    }
+
+    list.innerHTML = '';
+    for (var ki = 0; ki < keys.length; ki++) {
+      var k = keys[ki];
+      var dateKey = k.replace('akt_', '');
+      var ids = [];
+      try { ids = JSON.parse(localStorage.getItem(k) || '[]'); } catch(e) {}
+      if (ids.length === 0) continue;
+
+      var label = formatDateLabel(dateKey);
+      var pct = Math.round(ids.length / 14 * 100);
+
+      var card = document.createElement('div');
+      card.className = 'date-card';
+
+      var bodyId = 'rw-body-' + ki;
+      var html = '<div class="date-card-hdr" onclick="var b=document.getElementById('' + bodyId + '');b.classList.toggle('show')">';
+      html += '<div>';
+      html += '<div class="date-label">' + label + '</div>';
+      html += '<div class="date-sub">' + ids.length + ' aktivitas &middot; ' + pct + '% selesai</div>';
+      html += '</div>';
+      html += '<span class="date-count">' + ids.length + '/14</span>';
+      html += '</div>';
+
+      html += '<div id="' + bodyId + '" class="date-body' + (ki === 0 ? ' show' : '') + '">';
+      for (var j = 0; j < ids.length; j++) {
+        var act = getActById(ids[j]);
+        if (!act) continue;
+        html += '<div class="act-item">';
+        html += '<div class="act-num" style="background:' + act.bg + ';color:' + act.color + '">' + act.id + '</div>';
+        html += '<div class="act-info">';
+        html += '<div class="act-title">' + act.title + '</div>';
+        html += '<div class="act-tags">';
+        for (var t = 0; t < act.tags.length; t++) {
+          var tc = TAG_COLOR[act.tags[t]];
+          if (tc) html += '<span class="tag" style="background:' + tc.bg + ';color:' + tc.color + '">' + tc.label + '</span>';
+        }
+        html += '</div></div></div>';
+      }
+      html += '</div>';
+
+      card.innerHTML = html;
+      list.appendChild(card);
+    }
+  }
+
+  // CLEAR ALL HISTORY
+  document.getElementById('btn-clear-history').addEventListener('click', function() {
+    if (!confirm('Hapus semua riwayat aktivitas? Data tidak bisa dikembalikan.')) return;
+    var keys = getAllHistoryKeys();
+    for (var i = 0; i < keys.length; i++) { localStorage.removeItem(keys[i]); }
+    renderRiwayat();
+  });
+
 })();
 </script>
 </body>
