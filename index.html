@@ -490,202 +490,229 @@ main{max-width:700px;margin:0 auto;padding:16px 14px 90px}
 
 <script>
 (function(){
+  var TOTAL = 14;
 
-  // ACTIVITY METADATA
   var ACTS = [
-    {id:1,  title:'Sapa di Depan Cermin',           tags:['verbal','sosial'],   bg:'#FFF0EB',color:'#FF7F50'},
-    {id:2,  title:'Rutinitas Berpakaian Bernama',   tags:['verbal'],            bg:'#FFF0EB',color:'#FF7F50'},
-    {id:3,  title:'Eksplorasi Tekstur Makanan',     tags:['sensori','verbal'],  bg:'#EBF6FB',color:'#4DAACC'},
-    {id:4,  title:'Bermain Play-Doh / Tanah Liat',  tags:['sensori','verbal','motorik'], bg:'#EBF6FB',color:'#4DAACC'},
-    {id:5,  title:'Meniup Gelembung Sabun',         tags:['verbal','motorik'],  bg:'#FFF0EB',color:'#FF7F50'},
-    {id:6,  title:'Bernyanyi & Gerak (Lagu Anak)',  tags:['verbal','motorik','sensori'], bg:'#EDF8F1',color:'#5BC47A'},
-    {id:7,  title:'Bermain Peran Sederhana',        tags:['verbal','sosial'],   bg:'#F7EDFB',color:'#C97DD5'},
-    {id:8,  title:'Puzzle & Sortir Warna/Bentuk',   tags:['verbal','sensori'],  bg:'#EBF6FB',color:'#4DAACC'},
-    {id:9,  title:'Main Air atau Pasir',            tags:['sensori','motorik'], bg:'#EDF8F1',color:'#5BC47A'},
-    {id:10, title:'Jalan & Komentari Lingkungan',   tags:['verbal','motorik','sensori'], bg:'#FFF0EB',color:'#FF7F50'},
-    {id:11, title:'DIR/Floortime - Ikuti Anak',     tags:['terapi','sosial','verbal'],   bg:'#FFF8EB',color:'#F5A623'},
-    {id:12, title:'Latihan Imitasi Mulut di Cermin',tags:['terapi','verbal','motorik'],  bg:'#FFF8EB',color:'#F5A623'},
-    {id:13, title:'Mandi Verbalisasi',              tags:['verbal','sensori'],  bg:'#EBF6FB',color:'#4DAACC'},
-    {id:14, title:'Buku Malam & Ceritakan Hari',    tags:['verbal','sosial'],   bg:'#FFF0EB',color:'#FF7F50'}
+    {id:1,  title:'Sapa di Depan Cermin',            tags:['verbal','sosial'],            bg:'#FFF0EB',fg:'#FF7F50'},
+    {id:2,  title:'Rutinitas Berpakaian Bernama',    tags:['verbal'],                     bg:'#FFF0EB',fg:'#FF7F50'},
+    {id:3,  title:'Eksplorasi Tekstur Makanan',      tags:['sensori','verbal'],           bg:'#EBF6FB',fg:'#4DAACC'},
+    {id:4,  title:'Bermain Play-Doh / Tanah Liat',   tags:['sensori','verbal','motorik'], bg:'#EBF6FB',fg:'#4DAACC'},
+    {id:5,  title:'Meniup Gelembung Sabun',          tags:['verbal','motorik'],           bg:'#FFF0EB',fg:'#FF7F50'},
+    {id:6,  title:'Bernyanyi dan Gerak Lagu Anak',   tags:['verbal','motorik','sensori'], bg:'#EDF8F1',fg:'#5BC47A'},
+    {id:7,  title:'Bermain Peran Sederhana',         tags:['verbal','sosial'],            bg:'#F7EDFB',fg:'#C97DD5'},
+    {id:8,  title:'Puzzle dan Sortir Warna Bentuk',  tags:['verbal','sensori'],           bg:'#EBF6FB',fg:'#4DAACC'},
+    {id:9,  title:'Main Air atau Pasir',             tags:['sensori','motorik'],          bg:'#EDF8F1',fg:'#5BC47A'},
+    {id:10, title:'Jalan dan Komentari Lingkungan',  tags:['verbal','motorik','sensori'], bg:'#FFF0EB',fg:'#FF7F50'},
+    {id:11, title:'DIR Floortime Ikuti Anak',        tags:['terapi','sosial','verbal'],   bg:'#FFF8EB',fg:'#F5A623'},
+    {id:12, title:'Latihan Imitasi Mulut di Cermin', tags:['terapi','verbal','motorik'],  bg:'#FFF8EB',fg:'#F5A623'},
+    {id:13, title:'Mandi Verbalisasi',               tags:['verbal','sensori'],           bg:'#EBF6FB',fg:'#4DAACC'},
+    {id:14, title:'Buku Malam dan Ceritakan Hari',   tags:['verbal','sosial'],            bg:'#FFF0EB',fg:'#FF7F50'}
   ];
 
-  var TAG_COLOR = {
-    verbal:  {bg:'#FFF0EB',color:'#FF7F50',label:'Verbal'},
-    sensori: {bg:'#EBF6FB',color:'#4DAACC',label:'Sensori'},
-    motorik: {bg:'#EDF8F1',color:'#5BC47A',label:'Motorik'},
-    sosial:  {bg:'#F7EDFB',color:'#C97DD5',label:'Sosial'},
-    terapi:  {bg:'#FFF8EB',color:'#F5A623',label:'Terapi'}
+  var TAG = {
+    verbal:  {bg:'#FFF0EB',fg:'#FF7F50', label:'Verbal'},
+    sensori: {bg:'#EBF6FB',fg:'#4DAACC', label:'Sensori'},
+    motorik: {bg:'#EDF8F1',fg:'#5BC47A', label:'Motorik'},
+    sosial:  {bg:'#F7EDFB',fg:'#C97DD5', label:'Sosial'},
+    terapi:  {bg:'#FFF8EB',fg:'#F5A623', label:'Terapi'}
   };
 
   var DAYS   = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
   var MONTHS = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
 
+  /* ---- helpers ---- */
   function todayKey() {
     var d = new Date();
     var m = d.getMonth() + 1;
     var dd = d.getDate();
-    return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (dd < 10 ? '0' : '') + dd;
+    return d.getFullYear()
+      + '-' + (m  < 10 ? '0' : '') + m
+      + '-' + (dd < 10 ? '0' : '') + dd;
   }
 
-  function keyToDate(key) {
-    var p = key.split('-');
-    return new Date(parseInt(p[0]), parseInt(p[1]) - 1, parseInt(p[2]));
-  }
-
-  function formatDateLabel(key) {
-    var d = keyToDate(key);
+  function dateLabel(key) {
+    var p  = key.split('-');
+    var d  = new Date(+p[0], +p[1]-1, +p[2]);
     var tk = todayKey();
-    var base = DAYS[d.getDay()] + ', ' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+    var yd = new Date(); yd.setDate(yd.getDate()-1);
+    var yk = yd.getFullYear()
+      + '-' + (yd.getMonth()+1<10?'0':'')+(yd.getMonth()+1)
+      + '-' + (yd.getDate()<10?'0':'')+yd.getDate();
+    var base = DAYS[d.getDay()] + ', ' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + p[0];
     if (key === tk) return 'Hari Ini - ' + base;
-    var yd = new Date();
-    yd.setDate(yd.getDate() - 1);
-    var yk = yd.getFullYear() + '-' + (yd.getMonth()+1<10?'0':'') + (yd.getMonth()+1) + '-' + (yd.getDate()<10?'0':'') + yd.getDate();
     if (key === yk) return 'Kemarin - ' + base;
     return base;
   }
 
-  // STORAGE
-  function saveToday(doneIds) {
-    var key = 'akt_' + todayKey();
-    if (doneIds.length > 0) {
-      localStorage.setItem(key, JSON.stringify(doneIds));
-    } else {
-      localStorage.removeItem(key);
-    }
-  }
-
-  function loadToday() {
-    var key = 'akt_' + todayKey();
+  function lsGet(key) {
     try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) { return []; }
   }
-
-  function getAllHistoryKeys() {
-    var keys = [];
+  function lsSet(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+  }
+  function lsDel(key) {
+    try { localStorage.removeItem(key); } catch(e) {}
+  }
+  function allKeys() {
+    var out = [];
     for (var i = 0; i < localStorage.length; i++) {
       var k = localStorage.key(i);
-      if (k && k.indexOf('akt_') === 0) keys.push(k);
+      if (k && k.indexOf('akt_') === 0) out.push(k);
     }
-    keys.sort(function(a, b) { return a > b ? -1 : 1; });
-    return keys;
+    out.sort(function(a,b){ return a>b?-1:1; });
+    return out;
   }
 
-  function getActById(id) {
-    for (var i = 0; i < ACTS.length; i++) {
-      if (ACTS[i].id === id) return ACTS[i];
+  function saveToday() {
+    var ids = [];
+    var btns = document.querySelectorAll('.chk');
+    for (var i = 0; i < btns.length; i++) {
+      if (btns[i].classList.contains('done')) ids.push(i+1);
     }
-    return null;
+    var key = 'akt_' + todayKey();
+    if (ids.length > 0) lsSet(key, ids); else lsDel(key);
   }
 
-  // INIT - load today's saved state
-  var savedIds = loadToday();
-  document.querySelectorAll('.chk').forEach(function(btn, idx) {
-    var actId = idx + 1;
-    btn.dataset.actId = actId;
-    if (savedIds.indexOf(actId) !== -1) btn.classList.add('done');
-  });
+  /* ---- init checklist from storage ---- */
+  var saved = lsGet('akt_' + todayKey());
+  var allChk = document.querySelectorAll('.chk');
+  for (var i = 0; i < allChk.length; i++) {
+    if (saved.indexOf(i+1) !== -1) allChk[i].classList.add('done');
+  }
 
-  // NAV TABS
-  document.querySelectorAll('.nav-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
-      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-      btn.classList.add('active');
-      var pid = btn.dataset.page;
-      document.getElementById(pid).classList.add('active');
-      if (pid === 'pg-riwayat') renderRiwayat();
-      window.scrollTo(0, 0);
-    });
-  });
-
-  // CARD TOGGLE
-  document.querySelectorAll('.card-hdr').forEach(function(hdr) {
-    hdr.addEventListener('click', function(e) {
-      if (e.target.closest && e.target.closest('.chk')) return;
-      var body = hdr.nextElementSibling;
-      var open = body.classList.contains('show');
-      body.classList.toggle('show', !open);
-      hdr.classList.toggle('open', !open);
-    });
-  });
-
-  // INNER TABS
-  document.querySelectorAll('.itab').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      var cb = btn.closest('.card-body');
-      cb.querySelectorAll('.itab').forEach(function(t) { t.classList.remove('active'); });
-      cb.querySelectorAll('.tab-pnl').forEach(function(p) { p.classList.remove('show'); });
-      btn.classList.add('active');
-      document.getElementById(btn.dataset.t).classList.add('show');
-    });
-  });
-
-  // CHECK BUTTONS
-  document.querySelectorAll('.chk').forEach(function(btn, idx) {
-    btn.dataset.actId = idx + 1;
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      btn.classList.toggle('done');
-      var doneIds = [];
-      document.querySelectorAll('.chk.done').forEach(function(b) {
-        doneIds.push(parseInt(b.dataset.actId));
-      });
-      saveToday(doneIds);
-      updateProgress();
-    });
-  });
-
-  // FILTER
-  document.querySelectorAll('.fchip').forEach(function(chip) {
-    chip.addEventListener('click', function() {
-      var tag = chip.dataset.filter;
-      document.querySelectorAll('.fchip').forEach(function(c) { c.classList.remove('active'); });
-      chip.classList.add('active');
-      document.querySelectorAll('.card').forEach(function(card) {
-        if (tag === 'all') { card.classList.remove('hidden'); return; }
-        card.classList.toggle('hidden', (card.dataset.tags || '').indexOf(tag) === -1);
-      });
-      document.querySelectorAll('.tsec').forEach(function(sec) {
-        var visible = sec.querySelectorAll('.card:not(.hidden)').length > 0;
-        sec.style.display = visible ? '' : 'none';
-      });
-    });
-  });
-
-  // RESET TODAY
-  document.getElementById('btn-reset').addEventListener('click', function() {
-    if (!confirm('Reset semua checklist hari ini?')) return;
-    document.querySelectorAll('.chk').forEach(function(b) { b.classList.remove('done'); });
-    saveToday([]);
-    updateProgress();
-  });
-
-  // PROGRESS BAR
+  /* ---- progress ---- */
   function updateProgress() {
     var done = document.querySelectorAll('.chk.done').length;
-    var pct = Math.round(done / 14 * 100);
+    var pct  = Math.round(done / TOTAL * 100);
     document.getElementById('stat-done').textContent = done;
-    document.getElementById('stat-pct').textContent = pct + '%';
-    document.getElementById('prog-bar').style.width = pct + '%';
-    document.getElementById('prog-txt').textContent = done + ' selesai hari ini';
+    document.getElementById('stat-pct').textContent  = pct + '%';
+    document.getElementById('prog-bar').style.width  = pct + '%';
+    document.getElementById('prog-txt').textContent  = done + ' selesai hari ini';
   }
   updateProgress();
 
-  // RENDER RIWAYAT
+  /* ---- nav tabs ---- */
+  var navBtns = document.querySelectorAll('.nav-btn');
+  for (var n = 0; n < navBtns.length; n++) {
+    (function(btn){
+      btn.addEventListener('click', function(){
+        for (var j=0;j<navBtns.length;j++) navBtns[j].classList.remove('active');
+        var pages = document.querySelectorAll('.page');
+        for (var j=0;j<pages.length;j++) pages[j].classList.remove('active');
+        btn.classList.add('active');
+        document.getElementById(btn.getAttribute('data-page')).classList.add('active');
+        if (btn.getAttribute('data-page') === 'pg-riwayat') renderRiwayat();
+        window.scrollTo(0,0);
+      });
+    })(navBtns[n]);
+  }
+
+  /* ---- card toggle ---- */
+  var hdrs = document.querySelectorAll('.card-hdr');
+  for (var h = 0; h < hdrs.length; h++) {
+    (function(hdr){
+      hdr.addEventListener('click', function(e){
+        /* ignore if tap on check button */
+        var t = e.target;
+        while (t && t !== hdr) {
+          if (t.classList && t.classList.contains('chk')) return;
+          t = t.parentNode;
+        }
+        var body = hdr.nextElementSibling;
+        var wasOpen = body.classList.contains('show');
+        body.classList[wasOpen ? 'remove' : 'add']('show');
+        hdr.classList[wasOpen  ? 'remove' : 'add']('open');
+      });
+    })(hdrs[h]);
+  }
+
+  /* ---- inner tabs ---- */
+  var itabs = document.querySelectorAll('.itab');
+  for (var it = 0; it < itabs.length; it++) {
+    (function(btn){
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var cb = btn.parentNode; /* .itabs div */
+        while (cb && !cb.classList.contains('card-body')) cb = cb.parentNode;
+        if (!cb) return;
+        var siblings = cb.querySelectorAll('.itab');
+        var panels   = cb.querySelectorAll('.tab-pnl');
+        for (var j=0;j<siblings.length;j++) siblings[j].classList.remove('active');
+        for (var j=0;j<panels.length;j++) panels[j].classList.remove('show');
+        btn.classList.add('active');
+        var tid = btn.getAttribute('data-t');
+        if (tid) document.getElementById(tid).classList.add('show');
+      });
+    })(itabs[it]);
+  }
+
+  /* ---- check buttons ---- */
+  var chkBtns = document.querySelectorAll('.chk');
+  for (var c = 0; c < chkBtns.length; c++) {
+    (function(btn){
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        btn.classList[btn.classList.contains('done')?'remove':'add']('done');
+        saveToday();
+        updateProgress();
+      });
+    })(chkBtns[c]);
+  }
+
+  /* ---- filter chips ---- */
+  var chips = document.querySelectorAll('.fchip');
+  for (var fc = 0; fc < chips.length; fc++) {
+    (function(chip){
+      chip.addEventListener('click', function(){
+        var tag = chip.getAttribute('data-filter');
+        for (var j=0;j<chips.length;j++) chips[j].classList.remove('active');
+        chip.classList.add('active');
+        var cards = document.querySelectorAll('.card');
+        for (var j=0;j<cards.length;j++) {
+          if (tag === 'all') { cards[j].classList.remove('hidden'); }
+          else {
+            var tags = cards[j].getAttribute('data-tags') || '';
+            cards[j].classList[tags.indexOf(tag)===-1?'add':'remove']('hidden');
+          }
+        }
+        var secs = document.querySelectorAll('.tsec');
+        for (var j=0;j<secs.length;j++) {
+          secs[j].style.display = secs[j].querySelectorAll('.card:not(.hidden)').length > 0 ? '' : 'none';
+        }
+      });
+    })(chips[fc]);
+  }
+
+  /* ---- reset today ---- */
+  document.getElementById('btn-reset').addEventListener('click', function(){
+    if (!confirm('Reset semua checklist hari ini?')) return;
+    var btns = document.querySelectorAll('.chk');
+    for (var i=0;i<btns.length;i++) btns[i].classList.remove('done');
+    saveToday();
+    updateProgress();
+  });
+
+  /* ---- clear history ---- */
+  document.getElementById('btn-clear-history').addEventListener('click', function(){
+    if (!confirm('Hapus semua riwayat? Data tidak bisa dikembalikan.')) return;
+    var keys = allKeys();
+    for (var i=0;i<keys.length;i++) lsDel(keys[i]);
+    renderRiwayat();
+  });
+
+  /* ---- render riwayat ---- */
   function renderRiwayat() {
-    var keys = getAllHistoryKeys();
-    var list = document.getElementById('rw-list');
-
+    var keys     = allKeys();
+    var list     = document.getElementById('rw-list');
     var totalAct = 0;
-    for (var i = 0; i < keys.length; i++) {
-      try { totalAct += JSON.parse(localStorage.getItem(keys[i]) || '[]').length; } catch(e) {}
+    for (var i=0;i<keys.length;i++) {
+      totalAct += lsGet(keys[i]).length;
     }
-
     document.getElementById('rw-total-hari').textContent = keys.length;
-    document.getElementById('rw-total-act').textContent = totalAct;
-    document.getElementById('rw-avg').textContent = keys.length > 0 ? Math.round(totalAct / keys.length) : 0;
+    document.getElementById('rw-total-act').textContent  = totalAct;
+    document.getElementById('rw-avg').textContent = keys.length > 0 ? Math.round(totalAct/keys.length) : 0;
 
-    var todayIds = loadToday();
+    var todayIds = lsGet('akt_' + todayKey());
     var now = new Date();
     document.getElementById('rw-today-label').textContent = DAYS[now.getDay()] + ', ' + now.getDate() + ' ' + MONTHS[now.getMonth()] + ' ' + now.getFullYear();
     document.getElementById('rw-today-sub').textContent = todayIds.length > 0
@@ -693,62 +720,47 @@ main{max-width:700px;margin:0 auto;padding:16px 14px 90px}
       : 'Belum ada aktivitas yang diselesaikan hari ini';
 
     if (keys.length === 0) {
-      list.innerHTML = '<div class="empty-state"><div class="es-icon">&#128203;</div><p>Belum ada riwayat aktivitas.<br>Centang aktivitas di tab Aktivitas<br>untuk mulai mencatat!</p></div>';
+      list.innerHTML = '<div class="empty-state"><div class="es-icon">&#128203;</div><p>Belum ada riwayat.<br>Centang aktivitas di tab Aktivitas<br>untuk mulai mencatat!</p></div>';
       return;
     }
 
     list.innerHTML = '';
-    for (var ki = 0; ki < keys.length; ki++) {
-      var k = keys[ki];
-      var dateKey = k.replace('akt_', '');
-      var ids = [];
-      try { ids = JSON.parse(localStorage.getItem(k) || '[]'); } catch(e) {}
+    for (var ki=0; ki<keys.length; ki++) {
+      var ids = lsGet(keys[ki]);
       if (ids.length === 0) continue;
-
-      var label = formatDateLabel(dateKey);
-      var pct = Math.round(ids.length / 14 * 100);
+      var dk  = keys[ki].replace('akt_','');
+      var pct = Math.round(ids.length/14*100);
+      var lbl = dateLabel(dk);
+      var bid = 'rwb' + ki;
 
       var card = document.createElement('div');
       card.className = 'date-card';
 
-      var bodyId = 'rw-body-' + ki;
-      var html = '<div class="date-card-hdr" onclick="var b=document.getElementById('' + bodyId + '');b.classList.toggle('show')">';
-      html += '<div>';
-      html += '<div class="date-label">' + label + '</div>';
-      html += '<div class="date-sub">' + ids.length + ' aktivitas &middot; ' + pct + '% selesai</div>';
-      html += '</div>';
-      html += '<span class="date-count">' + ids.length + '/14</span>';
-      html += '</div>';
+      var html = '<div class="date-card-hdr" onclick="var b=document.getElementById(\'' + bid + '\');b.style.display=b.style.display===\'block\'?\'none\':\'block\'">'
+        + '<div><div class="date-label">' + lbl + '</div>'
+        + '<div class="date-sub">' + ids.length + ' aktivitas &middot; ' + pct + '% selesai</div></div>'
+        + '<span class="date-count">' + ids.length + '/14</span></div>';
 
-      html += '<div id="' + bodyId + '" class="date-body' + (ki === 0 ? ' show' : '') + '">';
-      for (var j = 0; j < ids.length; j++) {
-        var act = getActById(ids[j]);
+      html += '<div id="' + bid + '" style="display:' + (ki===0?'block':'none') + ';margin-top:12px">';
+      for (var j=0;j<ids.length;j++) {
+        var act = null;
+        for (var ai=0;ai<ACTS.length;ai++) { if (ACTS[ai].id===ids[j]) { act=ACTS[ai]; break; } }
         if (!act) continue;
-        html += '<div class="act-item">';
-        html += '<div class="act-num" style="background:' + act.bg + ';color:' + act.color + '">' + act.id + '</div>';
-        html += '<div class="act-info">';
-        html += '<div class="act-title">' + act.title + '</div>';
-        html += '<div class="act-tags">';
-        for (var t = 0; t < act.tags.length; t++) {
-          var tc = TAG_COLOR[act.tags[t]];
-          if (tc) html += '<span class="tag" style="background:' + tc.bg + ';color:' + tc.color + '">' + tc.label + '</span>';
+        html += '<div class="act-item">'
+          + '<div class="act-num" style="background:'+act.bg+';color:'+act.fg+'">'+act.id+'</div>'
+          + '<div class="act-info"><div class="act-title">'+act.title+'</div>'
+          + '<div class="act-tags">';
+        for (var t=0;t<act.tags.length;t++) {
+          var tc = TAG[act.tags[t]];
+          if (tc) html += '<span class="tag" style="background:'+tc.bg+';color:'+tc.fg+'">'+tc.label+'</span>';
         }
         html += '</div></div></div>';
       }
       html += '</div>';
-
       card.innerHTML = html;
       list.appendChild(card);
     }
   }
-
-  // CLEAR ALL HISTORY
-  document.getElementById('btn-clear-history').addEventListener('click', function() {
-    if (!confirm('Hapus semua riwayat aktivitas? Data tidak bisa dikembalikan.')) return;
-    var keys = getAllHistoryKeys();
-    for (var i = 0; i < keys.length; i++) { localStorage.removeItem(keys[i]); }
-    renderRiwayat();
-  });
 
 })();
 </script>
